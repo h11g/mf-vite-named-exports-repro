@@ -46,8 +46,8 @@ file: <repo>/src/server.ts:1:0
    ^
 ```
 
-The error code is `MISSING_EXPORT`. Rollup stops at the first one; a project
-with many such imports gets one per import.
+The error code is `MISSING_EXPORT`. Rollup stops at the first one; in a project
+with many such imports, each one fails the build in turn.
 
 ## Controls
 
@@ -56,7 +56,7 @@ with many such imports gets one per import.
 | `NO_STUB=1 npm run build:ssr` (no stub plugin) | succeeds |
 | `npm run build:client` (stub plugin, client build) | fails with the same error |
 | `vite build --app` with `environments.ssr` | client environment fails first with the same error |
-| `import Thing from 'widget/Thing'` (default only) | succeeds: default-only imports are not rewritten |
+| `import Thing from 'widget/Thing'` (default only; the stub has a default export) | succeeds: default-only imports are not rewritten |
 | `import * as W from 'widget/Thing'` | fails with the same error |
 | `await import('widget/Thing')` | succeeds: the dynamic import is wrapped, but the wrapper reads the two exports as properties and falls back |
 
